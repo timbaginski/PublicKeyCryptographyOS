@@ -1,12 +1,79 @@
+import math
 class User:
 
-    def __init__(self, username, n, e, private_key):
-        self.n = n 
-        self.e = e 
-        self.private_key = private_key 
+    def __init__(self, username):
+        self.messages = []
+        self.username = username
 
 
-    def decrypt()
+    # find e, the second part of the public key. If fails return -1
+    def set_public_key(self, prime1, prime2):
+        if self.public_key != None:
+            return
+
+        self.n = prime1 * prime2
+        limit = (prime1 - 1) * (prime2 - 1)
+        
+        for i in range(limit):
+            if math.gcd(i, limit) == 1:
+                self.e = i
+
+        self.set_private_key(prime1, prime2)
+
+
+    # sets the private key based on the randomly selected prime numbers
+    def set_private_key(self, prime1, prime2):
+        if self.private_key != None:
+            return
+        limit = (prime1 - 1) * (prime2 - 1)
+        self.private_key = 1 % limit
+
+
+    # returns the two numbers that make up the public key
+    def get_public_key(self):
+        return [self.n, self.e]
+
+
+    # takes a message, converts it to a list of ascii values, and then sends a list of encrypted characters
+    def send_encrypted_message(self, message):
+        # first, convert the message to ascii characters
+        ascii_message = []
+        for c in message:
+            ascii_message.append(ord(c))
+
+        encrypted_message = []
+        for ascii in ascii_message:
+            encrypted_message.append(ascii ** self.e % self.n)
+        
+        self.messages.append(encrypted_message)
+        
+
+    def decrypt_message(self):
+        if len(self.messages) == 0:
+            return 
+
+        message = self.messages.pop(0)
+        plaintext_ascii = []
+
+        for encrypted in message:
+            plaintext_ascii.append(encrypted ** self.private_key % self.n)
+
+        res = ""
+        for character in plaintext_ascii:
+            res = res + ord(character)
+
+        return res
+
+
+    # check if a user has a given username
+    def has_username(self, username):
+        return self.username == username
+
+
+        
+
+
+
 
 
 
