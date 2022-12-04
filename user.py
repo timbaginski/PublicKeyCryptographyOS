@@ -3,13 +3,16 @@ class User:
 
     def __init__(self, username, password):
         self.messages = []
+        self.n = None 
+        self.e = None
+        self.private_key = None
         self.username = username
         self.password = password
 
 
     # find e, the second part of the public key. If fails return -1
     def set_public_key(self, prime1, prime2):
-        if self.public_key != None:
+        if self.n != None or self.e != None:
             return
 
         self.n = prime1 * prime2
@@ -51,7 +54,7 @@ class User:
 
     def decrypt_message(self, password):
         if password != self.password:
-            return
+            return ""
         if len(self.messages) == 0:
             return 
 
@@ -63,7 +66,7 @@ class User:
 
         res = ""
         for character in plaintext_ascii:
-            res = res + ord(character)
+            res = res + chr(character)
 
         return res
 
