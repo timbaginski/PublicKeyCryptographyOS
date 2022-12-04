@@ -12,7 +12,6 @@ def read_primes():
     primes = f.read().split(", ")
     for i in range(len(primes)):
         primes[i] = int(primes[i])
-    return primes
 
 
 # randomly selects a prime number from the list of primes
@@ -23,8 +22,8 @@ def select_primes():
     return prime1, prime2
 
 
-def create_user(username, prime1, prime2):
-    user = User(username=username)
+def create_user(username, password, prime1, prime2):
+    user = User(username=username, password=password)
     user.set_public_key(prime1, prime2)
     users.append(user)
 
@@ -42,8 +41,30 @@ def message_user(username, message):
     user.send_encrypted_message(message)
     return True
 
+# returns the command line arguments to print out for the user
+def get_help_message():
+    res = "usage: [options]\n"
+    res += "  options:\n"
+    res += "    -send message recipient\n" 
+    res += "    -read username password\n"
+    res += "    -add  username password\n"
+    res += "    -q"
 
+
+# main function
 def main():
+    # first we must store our primes in our primes global variable
+    read_primes()
+    print(get_help_message)
+    command = input()
+
+    while command != "-q":
+        
+
+
+
+    
+
 
     
 

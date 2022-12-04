@@ -1,9 +1,10 @@
 import math
 class User:
 
-    def __init__(self, username):
+    def __init__(self, username, password):
         self.messages = []
         self.username = username
+        self.password = password
 
 
     # find e, the second part of the public key. If fails return -1
@@ -48,7 +49,9 @@ class User:
         self.messages.append(encrypted_message)
         
 
-    def decrypt_message(self):
+    def decrypt_message(self, password):
+        if password != self.password:
+            return
         if len(self.messages) == 0:
             return 
 
