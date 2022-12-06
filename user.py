@@ -18,9 +18,10 @@ class User:
         self.n = prime1 * prime2
         limit = (prime1 - 1) * (prime2 - 1)
         
-        for i in range(limit):
+        for i in range(2, limit):
             if math.gcd(i, limit) == 1:
                 self.e = i
+                break
 
         self.set_private_key(prime1, prime2)
 
@@ -29,9 +30,14 @@ class User:
     def set_private_key(self, prime1, prime2):
         if self.private_key != None:
             return
-        limit = (prime1 - 1) * (prime2 - 1)
-        self.private_key = 1 % limit
+        t = (prime1 - 1) * (prime2 - 1)
+        
+        i = 1
+        while not (((t * i) + 1) / self.e).is_integer():
+            i += 1
 
+        self.private_key = int(((t * i) + 1) / self.e)
+        
 
     # returns the two numbers that make up the public key
     def get_public_key(self):
@@ -54,15 +60,15 @@ class User:
 
     def decrypt_message(self, password):
         if password != self.password:
-            return ""
+            return "incorrect password"
         if len(self.messages) == 0:
-            return 
+            return "no messages"
 
         message = self.messages.pop(0)
         plaintext_ascii = []
 
         for encrypted in message:
-            plaintext_ascii.append(encrypted ** self.private_key % self.n)
+            plaintext_ascii.append(int(encrypted ** self.private_key % self.n))
 
         res = ""
         for character in plaintext_ascii:

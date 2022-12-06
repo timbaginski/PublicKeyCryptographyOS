@@ -39,7 +39,7 @@ def message_user(username, message):
     if temp == None:
         return False 
 
-    user.send_encrypted_message(message)
+    temp.send_encrypted_message(message)
     return True
 
 # returns the command line arguments to print out for the user
