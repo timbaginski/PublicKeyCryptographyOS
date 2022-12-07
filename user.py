@@ -65,6 +65,7 @@ class User:
             return "no messages"
 
         message = self.messages.pop(0)
+        print("Encrypted message is: " + str(message))
         plaintext_ascii = []
 
         for encrypted in message:
